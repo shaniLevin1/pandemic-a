@@ -7,7 +7,8 @@ class OperationsExpert:public Player{
     private:
         Board board;
         City city;
+        // string role="OperationsExpert";
     public:
         Player& build() override;
-        inline OperationsExpert(Board board, City city):Player(board,city){}
+        inline OperationsExpert(Board board, City city):Player(board,city,"OperationsExpert"){}
 };

@@ -10,12 +10,12 @@ using namespace std;
 namespace pandemic{
 class Player{
     protected:
-    Board b;
-    City c;
-    // string type;
+        Board& board;
+        City city;
+        set<City> cards;
+        string special_role;
     public:
-        // inline Player(Board &b,City c,string type):b(b),c(c),type(type){}
-        inline Player(Board &b,City c):b(b),c(c){}
+        inline Player(Board &b,City c,string special_role):board(b),city(c),special_role(special_role){}
         Player& drive(City city);
         virtual Player& fly_direct(City city);
         Player& fly_charter(City city);
@@ -24,7 +24,8 @@ class Player{
         virtual Player& discover_cure(Color color);  
         virtual Player& treat(City city);
         Player& take_card(City city);
-        Player& role(); //dont sure about what the func returns
+        string role(); 
+        void remove_cards();
         friend ostream& operator<<(ostream& out, Player const &player);
 };
 }

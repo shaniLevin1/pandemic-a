@@ -1,6 +1,7 @@
 #include"Board.hpp"
 #include <map>
 #include <string>
+#include<set>
 using namespace std;
 namespace pandemic{
 
@@ -11,12 +12,59 @@ namespace pandemic{
         return out;
     }
     bool Board::is_clean(){
+        for(auto& city: Board::city_diseas_cubes) {
+            if(city.second>0) {
+                return false;
+            }
+        }
         return true;
     }
     void Board::remove_cures(){
-
+        map<Color, bool>::iterator it;
+        for (it = Board::color_madication.begin(); it != Board::color_madication.end(); it++){
+           Board::color_madication.at(it->first)=false;
+        }
     }
-    map<City,Color> city_color={{Algiers,Black},
+    bool Board::city_connected(City& city1, City& city2) {
+        return city_connection.at(city1).count(city2)==1; //if count func return 1-contains if 0-not
+    }
+    
+    int Board::city_research_stations(City& city){
+        return Board::city_if_have_research_stations.at(city);
+    }
+
+    void Board::update_research_station(City& city,int num){
+        Board::city_if_have_research_stations.at(city)=num;
+    }
+
+    Color Board::color_of_city(City& city){
+        return city_color.at(city);
+    }
+
+    bool Board::find_madication(Color& color){
+        return color_madication.at(color);
+    }
+
+    void Board::update_madication(Color& color){
+        color_madication.at(color);
+    }
+
+    bool Board::if_found_madication(Color& color){
+        return color_madication.at(color);
+    }
+
+    void Board::remove_stations(){
+        map<City,int>::iterator it;
+        for (it = Board::city_if_have_research_stations.begin(); it != Board::city_if_have_research_stations.end(); it++){
+           city_if_have_research_stations.at(it->first)=0;
+        }
+    }
+
+    // int Board::diseas_cubes_of_city(City& city){
+    //     return city_diseas_cubes.at(city);
+    // }
+
+    map<City,Color> Board::city_color={{Algiers,Black},
                         {Madrid,Black},
                         {Paris,Blue},
                         {Istanbul,Black},
@@ -92,7 +140,7 @@ namespace pandemic{
         { London, {NewYork, Madrid, Essen, Paris } },
         { LosAngeles, {SanFrancisco, Chicago, MexicoCity, Sydney } },
         { Madrid, {London, NewYork, Paris, SaoPaulo, Algiers } },
-        { Manila, {Taipei, SanFrancisco, HoChiMinhCity, Sydney } },
+        { Manila, {Taipei, SanFrancisco, HoChiMinhCity, Sydney, HongKong } },
         { MexicoCity, {LosAngeles, Chicago, Miami, Lima, Bogota } },
         { Miami, {Atlanta, MexicoCity, Washington, Bogota } },
         { Milan, {Essen, Paris, Istanbul } },
@@ -166,5 +214,61 @@ namespace pandemic{
             {LosAngeles,0},
             {SanFrancisco,0} }
         };
+        map<City, int> Board::city_if_have_research_stations{
+        {{Algiers,0},
+            {Madrid,0},
+            {Paris,0},
+            {Istanbul,0},
+            {Cairo,0},
+            {Atlanta,0},
+            {Chicago,0},
+            {Miami,0},
+            {Washington,0},
+            {Baghdad,0},
+            {Tehran,0},
+            {Riyadh,0},
+            {Karachi,0},
+            {Bangkok,0},
+            {Kolkata,0},
+            {Chennai,0},
+            {Jakarta,0},
+            {HoChiMinhCity,0},
+            {HongKong,0},
+            {Beijing,0},
+            {Shanghai,0},
+            {Seoul,0},
+            {Bogota,0},
+            {MexicoCity,0},
+            {Lima,0},
+            {Mumbai,0},
+            {SaoPaulo,0},
+            {BuenosAires,0},
+            {Khartoum,0},
+            {Delhi,0},
+            {Essen,0},
+            {London,0},
+            {Milan,0},
+            {StPetersburg,0},
+            {Manila,0},
+            {Taipei,0},
+            {Moscow,0},
+            {Sydney,0},
+            {Johannesburg,0},
+            {Kinshasa,0},
+            {Lagos,0},
+            {NewYork,0},
+            {Santiago,0},
+            {Montreal,0},
+            {Osaka,0},
+            {Tokyo,0},
+            {LosAngeles,0},
+            {SanFrancisco,0} }
+        };
+        map<Color,bool> Board::color_madication{
+            {{Black,false},
+            {Blue,false},
+            {Yellow,false},
+            {Red,false}}
+            };
   
 }
